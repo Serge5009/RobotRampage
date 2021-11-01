@@ -5,7 +5,10 @@ using UnityEngine;
 public class Robot : MonoBehaviour
 {
     [SerializeField]
-    private string robotType;
+    private string robotType;   //  Type of a robot defined in Constants
+
+    [SerializeField]
+    GameObject missileprefab;   //  Missile prefab
     public int health;
     public int range;
     public float fireRate;
@@ -19,7 +22,6 @@ public class Robot : MonoBehaviour
 
     void Start()
     {
-        // 1
         isDead = false;
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -27,27 +29,27 @@ public class Robot : MonoBehaviour
 
     void Update()
     {
-        // 2
-        if (isDead)
+        if (isDead) //  Dead Men Tell No Tales
         {
             return;
         }
-        // 3
-        transform.LookAt(player);
-        // 4
-        agent.SetDestination(player.position);
-        // 5
-        if (Vector3.Distance(transform.position, player.position) < range
-        && Time.time - timeLastFired > fireRate)
+        transform.LookAt(player);   //  look at player
+        agent.SetDestination(player.position);  //  go to player
+
+        if (Vector3.Distance(transform.position, player.position) < range   
+        && Time.time - timeLastFired > fireRate)    //  if player is in range and gun is ready
         {
-            // 6
-            timeLastFired = Time.time;
-            fire();
+            timeLastFired = Time.time;  
+            fire();                             //  shoot the player
         }
     }
 
     private void fire()
     {
-        robot.Play("Fire");
+        GameObject missile = Instantiate(missileprefab);   //   create missile 
+        missile.transform.position = missileFireSpot.transform.position;    //  at position and 
+        missile.transform.rotation = missileFireSpot.transform.rotation;    //  at rotation of missileFireSpot
+
+        robot.Play("Fire"); //  play animation
     }
 }
