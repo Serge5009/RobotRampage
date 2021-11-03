@@ -8,7 +8,8 @@ public class Robot : MonoBehaviour
     private string robotType;   //  Type of a robot defined in Constants
 
     [SerializeField]
-    GameObject missileprefab;   //  Missile prefab
+    GameObject missileprefab;   //  Missile prefab
+
     public int health;
     public int range;
     public float fireRate;
@@ -51,5 +52,26 @@ public class Robot : MonoBehaviour
         missile.transform.rotation = missileFireSpot.transform.rotation;    //  at rotation of missileFireSpot
 
         robot.Play("Fire"); //  play animation
+    }
+
+    public void TakeDamage(int amount)
+    {
+        if (isDead) //  don't touch him, he's already dead
+        {
+            return;
+        }
+        health -= amount;
+        if (health <= 0)
+        {
+            isDead = true;
+            robot.Play("Die");
+            StartCoroutine("DestroyRobot");
+        }
+    }
+
+    IEnumerator DestroyRobot()  //  robot destruction coroutine
+    {
+        yield return new WaitForSeconds(1.5f);  //  some time before destroying game object
+        Destroy(gameObject);
     }
 }
