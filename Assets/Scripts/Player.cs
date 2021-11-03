@@ -42,6 +42,56 @@ public class Player : MonoBehaviour
         }
     }
 
+    ///     PICKUPS     ///
 
-    
+    public void PickUpItem(int pickupType)
+    {   //  using constants to determine the type of pickup
+        switch (pickupType)
+        {
+            case Constants.PickUpArmor:
+                pickupArmor();
+                break;
+            case Constants.PickUpHealth:
+                pickupHealth();
+                break;
+            case Constants.PickUpAssaultRifleAmmo:
+                pickupAssaultRifleAmmo();
+                break;
+            case Constants.PickUpPistolAmmo:
+                pickupPisolAmmo();
+                break;
+            case Constants.PickUpShotgunAmmo:
+                pickupShotgunAmmo();
+                break;
+            default:
+                Debug.LogError("Bad pickup type passed" + pickupType);
+                break;
+        }
+    }
+
+    private void pickupHealth()                                 //  health
+    {
+        health += 50;
+        if (health > 200)
+        {   //  limit to 200
+            health = 200;
+        }
+    }
+    private void pickupArmor()                                  //  armor
+    {
+        armor += 15;
+    }
+
+    private void pickupAssaultRifleAmmo()                       //  ammo rifle
+    {
+        ammo.AddAmmo(Constants.AssaultRifle, 50);
+    }
+    private void pickupPisolAmmo()                              //  ammo pistol
+    {
+        ammo.AddAmmo(Constants.Pistol, 20);
+    }
+    private void pickupShotgunAmmo()                            //  ammo shotgun
+    {
+        ammo.AddAmmo(Constants.Shotgun, 10);
+    }
 }
